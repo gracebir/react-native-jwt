@@ -14,7 +14,6 @@ export const styles = StyleSheet.create({
     },
     errorText: {
         color: "red",
-        marginLeft: 10,
         fontWeight: "bold",
         fontStyle: "italic",
     },
@@ -28,8 +27,7 @@ export const styles = StyleSheet.create({
     },
     labelText: {
         color: "#000",
-        fontFamily: "Poppins_400Regular",
-        fontSize: 15,
-        marginLeft: 10,
+        fontFamily: "Poppins_500Medium",
+        fontSize: 16,
     },
 });
