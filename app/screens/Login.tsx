@@ -22,7 +22,7 @@ const Login = () => {
     };
     return (
         <View style={{ backgroundColor: "#FFF", flex: 1 }}>
-            <ScrollView>
+            <ScrollView showsVerticalScrollIndicator={false}>
                 <View style={styles.container}>
                     <View>
                         <Text style={styles.titleText}>Let's Sign you in.</Text>
