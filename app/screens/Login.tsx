@@ -3,76 +3,118 @@
 import {
     View,
     Text,
-    TextInput,
     TouchableOpacity,
     StyleSheet,
     ScrollView,
 } from "react-native";
-import React, { useState } from "react";
+import { Formik } from "formik";
+import React from "react";
 import { useAuth } from "../context/AuthContext";
 import TextField from "../components/TextField/TextField";
 import CustomButton from "../components/CustomButton/CustomButton";
+import { loginSchema } from "../../utils/baseSchema";
 
 const Login = () => {
-    const [email, setEmail] = useState("");
-    const [password, setPassword] = useState("");
-    const { onLogin } = useAuth();
-    const login = () => {
-        alert("login now");
-    };
+    const { onLogin, onRegister } = useAuth();
+    // const login = async () => {
+    //     const result = await onLogin!(email, password);
+    //     if (result && result.error) {
+    //         alert(result.msg);
+    //     }
+    // };
+
+    // we automatically call the login after a successful registration
+    const register = async () => {};
     return (
         <View style={{ backgroundColor: "#FFF", flex: 1 }}>
             <ScrollView showsVerticalScrollIndicator={false}>
-                <View style={styles.container}>
-                    <View>
-                        <Text style={styles.titleText}>Let's Sign you in.</Text>
-                    </View>
-                    <View>
-                        <Text style={styles.subTitle}>Welcome Back.</Text>
-                        <Text style={styles.subTitle}>You've been missed!</Text>
-                    </View>
-
-                    <View style={styles.formContain}>
-                        <TextField
-                            nativeID='email'
-                            value={email}
-                            onChange={(email: string) => {
-                                setEmail(email);
-                            }}
-                            placeholder='Enter username or email'
-                            label='Username or Email'
-                            keyBoardOption='email-address'
-                        />
-                        <TextField
-                            nativeID='password'
-                            value={password}
-                            isPassword={true}
-                            onChange={(password: string) => {
-                                setPassword(password);
-                            }}
-                            placeholder='Enter Password'
-                            label='Password'
-                            keyBoardOption='default'
-                        />
-                    </View>
-                    <View
-                        style={{
-                            marginTop: 40,
-                        }}
-                    >
-                        <View style={styles.registerContainer}>
-                            <Text style={styles.accountMsg}>
-                                Don't have an account?
-                            </Text>
-                            <TouchableOpacity>
-                                <Text style={styles.registerLink}>
-                                    Register
+                <Formik
+                    initialValues={{
+                        email: "",
+                        password: "",
+                    }}
+                    validationSchema={loginSchema}
+                    onSubmit={async (values) => {
+                        const result = await onLogin!(
+                            values.email,
+                            values.password
+                        );
+                        if (result && result.error) {
+                            alert(result.msg);
+                        }
+                    }}
+                >
+                    {({
+                        handleChange,
+                        values,
+                        handleBlur,
+                        handleSubmit,
+                        errors,
+                    }) => (
+                        <View style={styles.container}>
+                            <View>
+                                <Text style={styles.titleText}>
+                                    Let's Sign you in.
                                 </Text>
-                            </TouchableOpacity>
+                            </View>
+                            <View>
+                                <Text style={styles.subTitle}>
+                                    Welcome Back.
+                                </Text>
+                                <Text style={styles.subTitle}>
+                                    You've been missed!
+                                </Text>
+                            </View>
+
+                            <View style={styles.formContain}>
+                                <TextField
+                                    nativeID='email'
+                                    error={errors.email}
+                                    value={values.email}
+                                    onBlur={handleBlur("email")}
+                                    onChange={handleChange("email")}
+                                    placeholder='Enter username or email'
+                                    label='Username or Email'
+                                    keyBoardOption='email-address'
+                                />
+                                <TextField
+                                    nativeID='password'
+                                    error={errors.password}
+                                    value={values.password}
+                                    isPassword={true}
+                                    onBlur={handleBlur("password")}
+                                    onChange={handleChange("password")}
+                                    placeholder='Enter Password'
+                                    label='Password'
+                                    keyBoardOption='default'
+                                />
+                            </View>
+                            <View
+                                style={{
+                                    marginTop: 40,
+                                }}
+                            >
+                                <View style={styles.registerContainer}>
+                                    <Text style={styles.accountMsg}>
+                                        Don't have an account?
+                                    </Text>
+                                    <TouchableOpacity>
+                                        <Text style={styles.registerLink}>
+                                            Register
+                                        </Text>
+                                    </TouchableOpacity>
+                                </View>
+                                <CustomButton
+                                    onPress={() => {
+                                        handleSubmit();
+                                    }}
+                                    isLogin={true}
+                                    text='Login'
+                                />
+                            </View>
                         </View>
-                        <CustomButton isLogin={true} text='Login' />
-                    </View>
-                </View>
+                    )}
+                </Formik>
             </ScrollView>
         </View>
     );
