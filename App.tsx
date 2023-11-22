@@ -1,7 +1,4 @@
 /** @format */
-
-import { StatusBar } from "expo-status-bar";
-import { StyleSheet, Text, View } from "react-native";
 import {
     useFonts,
     Poppins_400Regular,
@@ -16,6 +13,8 @@ import Home from "./app/screens/Home";
 import Login from "./app/screens/Login";
 import { useEffect } from "react";
 import LoginHeader from "./app/components/LoginHeader";
+import Welcome from "./app/screens/Welcome";
+import HomeHeader from "./app/components/HomHeader/HomeHeader";
 
 const Stack = createNativeStackNavigator();
 
@@ -50,17 +49,32 @@ export const Layout = () => {
 
     return (
         <NavigationContainer>
-            <Stack.Navigator>
+            <Stack.Navigator initialRouteName='Welcome'>
                 {authState?.authenticated ? (
-                    <Stack.Screen name='Home' component={Home} />
-                ) : (
                     <Stack.Screen
                         options={{
-                            header: () => <LoginHeader />,
+                            header: () => <HomeHeader />,
                         }}
-                        name='Login'
-                        component={Login}
+                        name='Home'
+                        component={Home}
                     />
+                ) : (
+                    <>
+                        <Stack.Screen
+                            options={{
+                                headerShown: false,
+                            }}
+                            name='Welcome'
+                            component={Welcome}
+                        />
+                        <Stack.Screen
+                            options={{
+                                header: () => <LoginHeader />,
+                            }}
+                            name='Login'
+                            component={Login}
+                        />
+                    </>
                 )}
             </Stack.Navigator>
         </NavigationContainer>
