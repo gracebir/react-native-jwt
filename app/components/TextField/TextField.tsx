@@ -50,12 +50,12 @@ const TextField = ({
                     keyboardType={keyBoardOption}
                     value={value}
                     nativeID={nativeID}
-                    secureTextEntry={isPassword && show}
+                    secureTextEntry={isPassword && !show}
                     placeholder={placeholder}
                 />
                 {isPassword && (
                     <TouchableOpacity onPress={onToggle}>
-                        {show ? (
+                        {!show ? (
                             <Ionicons size={20} name='eye-off-outline' />
                         ) : (
                             <Ionicons size={20} name='eye-outline' />
