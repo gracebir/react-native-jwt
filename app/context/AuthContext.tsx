@@ -98,7 +98,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     const value = {
         onRegister: register,
         onLogin: login,
-        logout,
+        onLogout: logout,
         authState,
     };
     return (
